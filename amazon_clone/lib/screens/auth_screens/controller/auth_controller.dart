@@ -1,27 +1,48 @@
+import 'dart:developer';
+
 import 'package:amazon_clone/consts/consts.dart';
+import 'package:amazon_clone/routes/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../../../consts/prefs.dart';
+
 class AuthController extends GetxController {
   
   var isLoading = false.obs;
-  
+  var errorMsg =''.obs;
+
   //Text controllers
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
+  var email =''.obs;
+  var password =''.obs;
+
   //login Mehtod
-  Future<UserCredential?> loginMethod({context}) async {
-    UserCredential? userCredential;
-    try {
-      userCredential = await auth.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-    } on FirebaseAuthException catch (e) {
-      VxToast.show(context, msg: e.toString());
+  Future<void> loginMethod() async {
+    if(email.isEmpty || password.isEmpty){
+      errorMsg('Please enter email and password');
+      return;
     }
 
-    return userCredential;
+    isLoading(true);
+    errorMsg('');
+    try{
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+          email: email.value, password: password.value);
+
+      String? bearer = await userCredential.user!.getIdToken();
+      await Prefs.setBearer(bearer!);
+      await Prefs.setUserEmail(email.value);
+      await Prefs.setUserPassword(password.value);
+      log('Logged in successfully, token: $bearer');
+      Get.offAllNamed(AppRoutes.home);
+    }catch(e){
+      log('Error upserting user FCM token: $e');
+    }
   }
 
   //Sign Up Method
@@ -38,7 +59,7 @@ class AuthController extends GetxController {
   }
 
   //store user data
-  sotreUserData({name, passsowrd, email}) async {
+  storeUserData({name, passsowrd, email}) async {
     DocumentReference store =
         firestore.collection(usersCollection).doc(currentUser!.uid);
     store.set({

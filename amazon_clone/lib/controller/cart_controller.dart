@@ -1,5 +1,5 @@
 import 'package:amazon_clone/consts/consts.dart';
-import 'package:amazon_clone/controller/home_controller.dart';
+import 'package:amazon_clone/screens/home_screen/contoller/home_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 

@@ -2,17 +2,21 @@ import 'package:amazon_clone/common_widgets/bg_widget.dart';
 import 'package:amazon_clone/common_widgets/loading_indicator.dart';
 import 'package:amazon_clone/consts/consts.dart';
 import 'package:amazon_clone/consts/lists.dart';
-import 'package:amazon_clone/controller/auth_controller.dart';
 import 'package:amazon_clone/controller/profile_controller.dart';
+import 'package:amazon_clone/screens/auth_screens/controller/auth_controller.dart';
 import 'package:amazon_clone/screens/auth_screens/login_screen.dart';
 import 'package:amazon_clone/screens/chat_screen/message_screen.dart';
 import 'package:amazon_clone/screens/edit_screen.dart';
-import 'package:amazon_clone/screens/profile%20screen/components/details_tab.dart';
 import 'package:amazon_clone/screens/orders_screen/order_screen.dart';
+import 'package:amazon_clone/screens/profile%20screen/components/details_tab.dart';
 import 'package:amazon_clone/screens/wishlist_screen/wishlist_screen.dart';
 import 'package:amazon_clone/services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../routes/app_routes.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -83,8 +87,10 @@ class ProfileScreen extends StatelessWidget {
                         style: OutlinedButton.styleFrom(
                             side: const BorderSide(color: whiteColor)),
                         onPressed: () async {
-                          await Get.put(AuthController().signout(context));
-                          Get.offAll(() => const LoginScreen());
+                          await FirebaseAuth.instance.signOut();
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.clear();
+                          Get.offAllNamed(AppRoutes.login);
                         },
                         child: "Logout".text.white.fontFamily(semibold).make())
                   ],
@@ -107,11 +113,11 @@ class ProfileScreen extends StatelessWidget {
                           detailsTab(
                               width: context.screenWidth / 3.3,
                               count: "${cData[2]}".toString(),
-                              title:  "in your wishlist"),
+                              title: "in your wishlist"),
                           detailsTab(
-                              width:  context.screenWidth / 3.3,
-                              count:  "${cData[1]}".toString(),
-                              title:  "your orders"),
+                              width: context.screenWidth / 3.3,
+                              count: "${cData[1]}".toString(),
+                              title: "your orders"),
                         ],
                       );
                     }

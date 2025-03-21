@@ -2,7 +2,7 @@ import 'package:amazon_clone/common_widgets/home_buttons.dart';
 import 'package:amazon_clone/common_widgets/loading_indicator.dart';
 import 'package:amazon_clone/consts/consts.dart';
 import 'package:amazon_clone/consts/lists.dart';
-import 'package:amazon_clone/controller/home_controller.dart';
+import 'package:amazon_clone/screens/home_screen/contoller/home_controller.dart';
 import 'package:amazon_clone/controller/product_controller.dart';
 import 'package:amazon_clone/screens/categories_screen/product_details.dart';
 import 'package:amazon_clone/screens/home_screen/search_screen.dart';

@@ -1,7 +1,11 @@
 import 'package:amazon_clone/consts/consts.dart';
+import 'package:amazon_clone/routes/app_routes.dart';
 import 'package:amazon_clone/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,16 +25,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //changing MaterialApp to GetMaterialApp
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: appname,
-      theme: ThemeData(
-          iconTheme: const IconThemeData(color: darkFontGrey),
-          scaffoldBackgroundColor: Colors.transparent,
-          appBarTheme: const AppBarTheme(color: Colors.transparent),
-          fontFamily: regular),
-      home: const SplashScren(),
+    return AnnotatedRegion(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.white,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: ScreenUtilInit(
+        minTextAdapt: true,
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.light,
+          initialRoute: AppRoutes.initialRoute,
+          getPages: AppRoutes.routes,
+          // home: SplashScren(),
+        ),
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:amazon_clone/common_widgets/exit_dialogue.dart';
 import 'package:amazon_clone/consts/consts.dart';
-import 'package:amazon_clone/controller/home_controller.dart';
+import 'package:amazon_clone/screens/home_screen/contoller/home_controller.dart';
 import 'package:amazon_clone/screens/cart_screen/cart_screen.dart';
 import 'package:amazon_clone/screens/categories_screen/categories_screen.dart';
 import 'package:amazon_clone/screens/home_screen/home_screen.dart';

@@ -1,5 +1,6 @@
 import 'package:amazon_clone/common_widgets/applogo_widget.dart';
 import 'package:amazon_clone/consts/consts.dart';
+import 'package:amazon_clone/routes/app_routes.dart';
 import 'package:amazon_clone/screens/auth_screens/login_screen.dart';
 import 'package:amazon_clone/screens/home_screen/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,9 +18,10 @@ class _SplashScrenState extends State<SplashScren> {
     Future.delayed(const Duration(seconds: 3), () {
       auth.authStateChanges().listen((User? user) {
         if (user == null && mounted) {
-          Get.to(() => const LoginScreen());
+          Get.offAllNamed(AppRoutes.login);
         } else {
-          Get.to(() => const Home());
+          Get.offAllNamed(AppRoutes.home);
+
         }
       });
     });
