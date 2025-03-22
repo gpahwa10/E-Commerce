@@ -310,32 +310,18 @@ class SignUpScreen extends GetView<AuthController> {
               SizedBox(height: 20.h),
               Center(child: Text('-OR Continue with-')),
               SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 44.h,
-                    width: 44.w,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: colorScheme.onPrimary,
-                        border: Border.all(
-                            color: colorScheme.onSurface, width: 1)),child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(icGoogleLogo),
-                  ),),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  Container(
-                    height: 44.h,
-                    width: 44.w,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: colorScheme.onPrimary,
-                        border: Border.all(
-                            color: colorScheme.onSurface, width: 1)),child: Icon(Icons.phone_android),),
-                ],
+              Center(
+                child: Container(
+                  height: 44.h,
+                  width: 44.w,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: colorScheme.onPrimary,
+                      border: Border.all(
+                          color: colorScheme.onSurface, width: 1)),child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(icGoogleLogo),
+                ),),
               ),
               SizedBox(height: 20.h),
               Center(
@@ -354,7 +340,7 @@ class SignUpScreen extends GetView<AuthController> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Get.toNamed(AppRoutes.initialRoute);
+                              Get.toNamed(AppRoutes.login);
                             }),
                     ],
                   ),

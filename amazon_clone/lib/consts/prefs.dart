@@ -10,12 +10,13 @@ class Prefs {
     final prefs = await getPrefs();
     prefs.setString('email', email);
   }
-  static Future<void> getUserEmail(String email) async {
+
+  static Future<String?> getUserEmail() async {
     final prefs = await getPrefs();
-    prefs.getString('email');
+    return prefs.getString('email');
   }
 
-  static Future<void> clearUserEmail(String email) async {
+  static Future<void> clearUserEmail() async {
     final prefs = await getPrefs();
     prefs.remove('email');
   }

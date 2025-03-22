@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:amazon_clone/consts/consts.dart';
@@ -9,6 +11,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
+import '../../../consts/prefs.dart';
+
 class ProfileController extends GetxController {
   var profileImgPath = ''.obs;
   var profileImgLink = '';
@@ -17,6 +21,51 @@ class ProfileController extends GetxController {
   var nameController = TextEditingController();
   var oldpassController = TextEditingController();
   var newPassController = TextEditingController();
+  
+  var email = ''.obs;
+  var name =''.obs;
+  var orderCount =0.obs;
+  var cartCount = 0.obs;
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  @override
+  void onInit(){
+    fetchPrefs();
+    fetchUserData();
+    super.onInit();
+  }
+
+  Future<void> fetchPrefs()async{
+    email.value = (await Prefs.getUserEmail())!;
+  }
+
+  Future<void> fetchUserData() async {
+    try {
+      final QuerySnapshot response = await FirebaseFirestore.instance
+          .collection(usersCollection)
+          .where('id', isEqualTo: userId)
+          .get();
+
+      if (response.docs.isNotEmpty) {
+        var userData = response.docs.first.data() as Map<String, dynamic>;
+
+        // Store data in observable variables
+        name.value = userData['name'] ?? '';
+        orderCount.value = int.tryParse(userData['order_count'].toString()) ?? 0;
+        cartCount.value = int.tryParse(userData['cart_count'].toString()) ?? 0;
+
+        print("User Data: $userData"); // Logging the fetched data
+        log(name.value);
+        log(orderCount.value.toString());
+        log(cartCount.value.toString());
+      } else {
+        print("No user found with the given ID");
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
+  }
+
+
 
   void changeImage(context) async {
     try {

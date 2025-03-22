@@ -5,117 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-// class LoginScreen extends StatelessWidget {
-//   const LoginScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     var controller = Get.put(AuthController());
-//
-//     return bgWidget(Scaffold(
-//       resizeToAvoidBottomInset: true,
-//       body: SingleChildScrollView(
-//         child: Center(
-//           child: Column(
-//             children: [
-//               (context.screenHeight * 0.1).heightBox,
-//               appLogoWidget(),
-//               10.heightBox,
-//               "Log in to $appname".text.fontFamily(bold).white.size(18).make(),
-//               10.heightBox,
-//               Obx(
-//                 () => Column(
-//                   children: [
-//                     customTextField(
-//                         title: email,
-//                         hint: emailHint,
-//                         controller: controller.emailController,
-//                         isPass: false),
-//                     5.heightBox,
-//                     customTextField(
-//                         title: password,
-//                         hint: passwordHint,
-//                         controller: controller.passwordController,
-//                         isPass: true),
-//                     5.heightBox,
-//                     Align(
-//                       alignment: Alignment.centerRight,
-//                       child: TextButton(
-//                         onPressed: () {},
-//                         child: forgetPassword.text.make(),
-//                       ),
-//                     ),
-//                     10.heightBox,
-//                     controller.isLoading.value
-//                         ? loadingIndicator()
-//                         : loginbutton(
-//                                 onPress: () async {
-//                                   controller.isLoading(true);
-//                                   await controller
-//                                       .loginMethod(context: context)
-//                                       .then((value) {
-//                                     if (value != null) {
-//                                       VxToast.show(context, msg: loginSuccess);
-//                                       Get.offAll(() => const Home());
-//                                     } else {
-//                                       controller.isLoading(false);
-//                                     }
-//                                   });
-//                                 },
-//                                 bgcolor: redColor,
-//                                 textColor: whiteColor,
-//                                 title: login)
-//                             .box
-//                             .width(context.screenWidth - 50)
-//                             .make(),
-//                     5.heightBox,
-//                     createNewAccount.text.color(fontGrey).make(),
-//                     5.heightBox,
-//                     loginbutton(
-//                             onPress: () {
-//                               Get.to(() => const SignUpScreen());
-//                             },
-//                             bgcolor: lightGrey,
-//                             textColor: redColor,
-//                             title: signup)
-//                         .box
-//                         .width(context.screenWidth - 50)
-//                         .make(),
-//                     10.heightBox,
-//                     loginWith.text.color(fontGrey).make(),
-//                     5.heightBox,
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: List.generate(
-//                           3,
-//                           (index) => Padding(
-//                                 padding: const EdgeInsets.all(8.0),
-//                                 child: CircleAvatar(
-//                                   radius: 25,
-//                                   backgroundColor: lightGrey,
-//                                   child: Image.asset(socialconList[index],
-//                                       width: 30),
-//                                 ),
-//                               )),
-//                     )
-//                   ],
-//                 )
-//                     .box
-//                     .white
-//                     .rounded
-//                     .padding(const EdgeInsets.all(16))
-//                     .width(context.screenWidth - 70)
-//                     .shadowLg
-//                     .make(),
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//     ));
-//   }
-// }
-
 class LoginScreen extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
@@ -182,7 +71,7 @@ class LoginScreen extends GetView<AuthController> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {Get.toNamed(AppRoutes.forgetPassword);},
                     child: Text(
                       'Forgot Password?',
                       style: TextStyle(
@@ -216,32 +105,18 @@ class LoginScreen extends GetView<AuthController> {
               SizedBox(height: 20.h),
               Center(child: Text('-OR Continue with-')),
               SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      height: 44.h,
-                      width: 44.w,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: colorScheme.onPrimary,
-                          border: Border.all(
-                              color: colorScheme.onSurface, width: 1)),child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.asset(icGoogleLogo),
-                              ),),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  Container(
-                      height: 44.h,
-                      width: 44.w,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: colorScheme.onPrimary,
-                          border: Border.all(
-                              color: colorScheme.onSurface, width: 1)),child: Icon(Icons.phone_android),),
-                ],
+              Center(
+                child: Container(
+                    height: 44.h,
+                    width: 44.w,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colorScheme.onPrimary,
+                        border: Border.all(
+                            color: colorScheme.onSurface, width: 1)),child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(icGoogleLogo),
+                            ),),
               ),
               SizedBox(height: 20.h),
               Center(

@@ -4,7 +4,7 @@ import 'package:amazon_clone/common_widgets/common_buton.dart';
 import 'package:amazon_clone/common_widgets/custom_textfield.dart';
 import 'package:amazon_clone/common_widgets/loading_indicator.dart';
 import 'package:amazon_clone/consts/consts.dart';
-import 'package:amazon_clone/controller/profile_controller.dart';
+import 'package:amazon_clone/screens/profile%20screen/controller/profile_controller.dart';
 import 'package:get/get.dart';
 
 class EditProfileScreen extends StatelessWidget {

@@ -1,17 +1,29 @@
 import 'package:amazon_clone/screens/auth_screens/binding/auth_screen_binding.dart';
+import 'package:amazon_clone/screens/auth_screens/forget_password.dart';
 import 'package:amazon_clone/screens/auth_screens/login_screen.dart';
 import 'package:amazon_clone/screens/auth_screens/new_user_screen.dart';
+import 'package:amazon_clone/screens/cart_screen/cart_screen.dart';
+import 'package:amazon_clone/screens/categories_screen/categories_screen.dart';
 import 'package:amazon_clone/screens/home_screen/binding/home_binding.dart';
+import 'package:amazon_clone/screens/home_screen/home_screen.dart';
+import 'package:amazon_clone/screens/profile%20screen/binding/profile_screen_binding.dart';
 import 'package:amazon_clone/screens/splash_screen.dart';
 import 'package:get/get.dart';
 
 import '../screens/home_screen/home.dart';
+import '../screens/profile screen/profile_screen.dart';
 
 class AppRoutes {
   static const String initialRoute = '/';
   static const String login = '/login';
   static const String newUser = '/new_user_register';
   static const String home = '/home';
+  static const String homeView = '/homeView';
+  static const String forgetPassword = '/forget_password';
+  static const String profileView = '/profile_view';
+  static const String cartView = '/profile_view';
+  static const String categoriesView = '/profile_view';
+
 
   static List<GetPage> routes = [
     GetPage(
@@ -20,6 +32,11 @@ class AppRoutes {
     ),
     GetPage(name: login, page: () => LoginScreen(),binding:AuthBinding()),
     GetPage(name: newUser, page: ()=>SignUpScreen(),binding:AuthBinding()),
-    GetPage(name: home, page: ()=>const Home(),binding:HomeBinding())
+    GetPage(name: home, page: ()=>const Home(),binding:HomeBinding()),
+    GetPage(name: homeView, page: ()=>const HomeScreen()),
+    GetPage(name: forgetPassword, page: ()=>const ForgetPassword()),
+    GetPage(name: profileView, page: ()=> const ProfileScreen(),binding: ProfileScreenBinding()),
+    GetPage(name: cartView, page: ()=> const CartScreen()),
+    GetPage(name: categoriesView, page: ()=> const CategoriesScreen()),
   ];
 }
