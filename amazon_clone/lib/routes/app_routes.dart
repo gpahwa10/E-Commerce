@@ -23,7 +23,7 @@ class AppRoutes {
   static const String homeView = '/homeView';
   static const String forgetPassword = '/forget_password';
   static const String profileView = '/profile_view';
-  static const String cartView = '/profile_view';
+  static const String cartView = '/cart_view';
   static const String categoriesView = '/categories_view';
   static const String wishlistView = '/wishlist_view';
   static const String shippingView = '/shipping_view';

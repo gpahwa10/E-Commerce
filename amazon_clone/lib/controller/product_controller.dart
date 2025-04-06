@@ -11,6 +11,9 @@ class ProductController extends GetxController {
   var totalPrice = 0.obs;
   var isFav = false.obs;
 
+  final currentImageIndex = 0.obs;
+  final selectedSizeIndex = 1.obs; // Default to 7 UK
+
   getSubcategories(title) async {
     subcat.clear();
     var data = await rootBundle.loadString("lib/services/category_model.json");
