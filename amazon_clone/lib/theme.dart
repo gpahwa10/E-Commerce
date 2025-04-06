@@ -18,6 +18,9 @@ const lightColorTheme = ColorScheme(
     secondary: Color(0xffFF9AA2), // Soft complementary shade
     onSecondary: Color(0xff000000), // Text/icon color on secondary
 
+    tertiary: Color(0xff004BFE),
+    onTertiary: Color(0xff000000),
+
     error: Color(0xffba1a1a), // Error color
     onError: Color(0xffffffff), // Text/icon color on error
 

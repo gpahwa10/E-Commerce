@@ -1,8 +1,6 @@
 import 'package:amazon_clone/common_widgets/applogo_widget.dart';
 import 'package:amazon_clone/consts/consts.dart';
 import 'package:amazon_clone/routes/app_routes.dart';
-import 'package:amazon_clone/screens/auth_screens/login_screen.dart';
-import 'package:amazon_clone/screens/home_screen/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 

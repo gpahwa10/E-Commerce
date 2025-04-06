@@ -1,37 +1,36 @@
 import 'package:amazon_clone/common_widgets/exit_dialogue.dart';
 import 'package:amazon_clone/consts/consts.dart';
-import 'package:amazon_clone/screens/home_screen/contoller/home_controller.dart';
+import 'package:amazon_clone/routes/app_routes.dart';
 import 'package:amazon_clone/screens/cart_screen/cart_screen.dart';
 import 'package:amazon_clone/screens/categories_screen/categories_screen.dart';
+import 'package:amazon_clone/screens/home_screen/contoller/home_controller.dart';
 import 'package:amazon_clone/screens/home_screen/home_screen.dart';
 import 'package:amazon_clone/screens/profile%20screen/profile_screen.dart';
+import 'package:amazon_clone/screens/wishlist_screen/wishlist_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
-
+class Home extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     //init home controller
     var controller = Get.put(HomeController());
 
-    // ignore: non_constant_identifier_names
-    var NavBarItem = [
-      BottomNavigationBarItem(
-          icon: Image.asset(icHome, width: 26), label: "Home"),
-      BottomNavigationBarItem(
-          icon: Image.asset(icCategories, width: 26), label: "Categories"),
-      BottomNavigationBarItem(
-          icon: Image.asset(icCart, width: 26), label: "Cart"),
-      BottomNavigationBarItem(
-          icon: Image.asset(icProfile, width: 26), label: "Profile"),
+    final List<Map<String, String>> tabs = [
+      {'label': 'Home', 'icon': icHome},
+      {'label': 'Wishlist', 'icon': icHeart},
+      {'label': 'Cart', 'icon': icCart},
+      {'label': 'Categories', 'icon': icCategories},
+      {'label': 'Profile', 'icon': icProfile},
     ];
 
     var navBody = [
       const HomeScreen(),
-      const CategoriesScreen(),
+      const WishlistScreen(),
       const CartScreen(),
-      ProfileScreen()
+      const CategoriesScreen(),
+      const ProfileScreen()
     ];
 
     return WillPopScope(
@@ -47,16 +46,53 @@ class Home extends StatelessWidget {
             child:
                 Obx(() => navBody.elementAt(controller.currentNavIndex.value))),
         bottomNavigationBar: Obx(
-          () => BottomNavigationBar(
-            currentIndex: controller.currentNavIndex.value,
-            selectedItemColor: redColor,
-            selectedLabelStyle: const TextStyle(fontFamily: semibold),
-            items: NavBarItem,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: whiteColor,
-            onTap: (value) {
-              controller.currentNavIndex.value = value;
-            },
+          () => Container(
+            color: colorScheme.onPrimary,
+            padding: EdgeInsets.symmetric(vertical: 8.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(tabs.length, (index) {
+                final isSelected = controller.currentNavIndex.value == index;
+                return GestureDetector(
+                  onTap: () {
+                    controller.currentNavIndex.value = index;
+                  },
+                  child: Container(
+                    width: 60.w,
+                    height: 55.h,
+                    decoration: BoxDecoration(
+                      color:
+                          isSelected ? colorScheme.primary : Colors.transparent,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          tabs[index]['icon']!,
+                          width: 20.w,
+                          height: 20.h,
+                          color: isSelected ? Colors.white : Colors.black,
+                          fit: BoxFit.contain,
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          tabs[index]['label']!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: isSelected ? Colors.white : Colors.black,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: semibold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+            ),
           ),
         ),
       ),

@@ -3,7 +3,7 @@ import 'package:amazon_clone/common_widgets/loading_indicator.dart';
 import 'package:amazon_clone/consts/consts.dart';
 import 'package:amazon_clone/consts/lists.dart';
 import 'package:amazon_clone/controller/cart_controller.dart';
-import 'package:amazon_clone/screens/home_screen/home.dart';
+import 'package:amazon_clone/routes/app_routes.dart';
 import 'package:get/get.dart';
 
 class PaymentMethods extends StatelessWidget {
@@ -35,7 +35,7 @@ class PaymentMethods extends StatelessWidget {
       
                         await controller.clearCart();
                         VxToast.show(context, msg: "Order Placed Successfully");
-                        Get.offAll(const Home());
+                        Get.offAll(AppRoutes.homeView);
                       },
                       bgcolor: redColor,
                       textColor: whiteColor,

@@ -1,11 +1,6 @@
-import 'package:amazon_clone/common_widgets/applogo_widget.dart';
-import 'package:amazon_clone/common_widgets/bg_widget.dart';
-import 'package:amazon_clone/common_widgets/common_buton.dart';
-import 'package:amazon_clone/common_widgets/custom_textfield.dart';
-import 'package:amazon_clone/common_widgets/loading_indicator.dart';
+
 import 'package:amazon_clone/consts/consts.dart';
 import 'package:amazon_clone/screens/auth_screens/controller/auth_controller.dart';
-import 'package:amazon_clone/screens/home_screen/home.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
