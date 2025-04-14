@@ -10,6 +10,7 @@ class ShippingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     var controller = Get.find<CartController>();
     return Scaffold(
       backgroundColor: whiteColor,
@@ -39,26 +40,35 @@ class ShippingScreen extends StatelessWidget {
         child: Column(
           children: [
             customTextField(
+              colorScheme: colorScheme,
                 title: "Address",
                 hint: "Address",
                 isPass: false,
                 controller: controller.addressController),
             customTextField(
+                colorScheme: colorScheme,
+
                 title: "City",
                 hint: "City",
                 isPass: false,
                 controller: controller.cityController),
             customTextField(
+                colorScheme: colorScheme,
+
                 title: "State",
                 hint: "State",
                 isPass: false,
                 controller: controller.stateController),
             customTextField(
+                colorScheme: colorScheme,
+
                 title: "Postal Code",
                 hint: "Postal Code",
                 isPass: false,
                 controller: controller.postalCodeController),
             customTextField(
+                colorScheme: colorScheme,
+
                 title: "Phone",
                 hint: "Phone",
                 isPass: false,

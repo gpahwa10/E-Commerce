@@ -9,7 +9,7 @@ class CartItemTile extends StatefulWidget {
   final String id;
   final String title;
   final String image;
-  final int tPrice;
+  final String tPrice;
   const CartItemTile({super.key, required this.qty, required this.id, required this.title, required this.image, required this.tPrice});
 
   @override
@@ -82,66 +82,6 @@ class _CartItemTileState extends State<CartItemTile> {
                         fontWeight: FontWeight.bold,
                         fontSize: 18.sp,
                         color: colorScheme.primary,
-                      ),
-                    ),
-
-                    // Quantity Controls
-                    Container(
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceVariant,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              // Decrease quantity function
-                              // if (data[index]['qty'] > 1) {
-                              //   // FirestoreServices.updateQuantity(
-                              //   //     data[index].id,
-                              //   //     data[index]['qty'] - 1
-                              //   // );
-                              // }
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8.r),
-                              child: Icon(
-                                Icons.remove,
-                                size: 16.sp,
-                                color: colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            constraints: BoxConstraints(minWidth: 32.w),
-                            padding: EdgeInsets.symmetric(horizontal: 4.w),
-                            alignment: Alignment.center,
-                            child: Text(
-                              widget.qty.toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              // Increase quantity function
-                              // FirestoreServices.updateQuantity(
-                              //     data[index].id,
-                              //     data[index]['qty'] + 1
-                              // );
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8.r),
-                              child: Icon(
-                                Icons.add,
-                                size: 16.sp,
-                                color: colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                   ],

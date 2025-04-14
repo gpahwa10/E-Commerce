@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:amazon_clone/common_widgets/bg_widget.dart';
-import 'package:amazon_clone/common_widgets/common_buton.dart';
+
+import 'package:amazon_clone/common_widgets/common_button.dart';
 import 'package:amazon_clone/common_widgets/custom_textfield.dart';
 import 'package:amazon_clone/common_widgets/loading_indicator.dart';
 import 'package:amazon_clone/consts/consts.dart';
 import 'package:amazon_clone/screens/profile%20screen/controller/profile_controller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -15,113 +16,119 @@ class EditProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<ProfileController>();
-    return bgWidget(Scaffold(
-      appBar: AppBar(),
+    final colorScheme = Theme.of(context).colorScheme;
+    return Scaffold(
+      backgroundColor: colorScheme.onPrimary,
+      appBar: AppBar(
+        title: Text('Edit Profile'),
+      ),
       body: Obx(
-        () => SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              //if url and control path are empty
-              data['imageUrl'] == '' && controller.profileImgPath.isEmpty
-                  ? Image.asset(
-                      imgProfile2,
-                      width: 100,
-                      fit: BoxFit.cover,
-                    ).box.roundedFull.clip(Clip.antiAlias).make()
-
-                  //data is not empty but controller path is empty
-                  : data['imageUrl'] != '' && controller.profileImgPath.isEmpty
-                      ? Image.network(data['imageUrl'],
-                              width: 100, fit: BoxFit.cover)
-                          .box
-                          .roundedFull
-                          .clip(Clip.antiAlias)
-                          .make()
-
-                      //if both the paths are empty
-                      : Image.file(
-                          File(controller.profileImgPath.value),
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ).box.roundedFull.clip(Clip.antiAlias).make(),
-              10.heightBox,
-              loginbutton(
-                  onPress: () {
+        () => Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 10.w),
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12.r),
+                color: colorScheme.secondary),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Handle profile image display
+                controller.profileImgPath.isEmpty
+                    ? (data != null &&
+                            data['imageUrl'] != null &&
+                            data['imageUrl'].isNotEmpty
+                        ? Image.network(
+                            data['imageUrl'],
+                            width: 100,
+                            fit: BoxFit.cover,
+                          ).box.roundedFull.clip(Clip.antiAlias).make()
+                        : Image.asset(
+                            imgProfile2,
+                            width: 100,
+                            fit: BoxFit.cover,
+                          ).box.roundedFull.clip(Clip.antiAlias).make())
+                    : Image.file(
+                        File(controller.profileImgPath.value),
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ).box.roundedFull.clip(Clip.antiAlias).make(),
+                10.heightBox,
+                CommonButton(
+                  text: 'Change Image',
+                  backgroundColor: colorScheme.primary,
+                  onPressed: () {
                     controller.changeImage(context);
                   },
-                  bgcolor: redColor,
-                  textColor: whiteColor,
-                  title: 'Change'),
-              const Divider(),
-              20.heightBox,
-              customTextField(
-                  title: name,
-                  hint: nameHint,
-                  controller: controller.nameController,
-                  isPass: false),
-              10.heightBox,
-              customTextField(
-                  title: oldpass,
-                  hint: passwordHint,
-                  controller: controller.oldpassController,
-                  isPass: true),
-              10.heightBox,
-              customTextField(
-                  title: newpass,
-                  hint: passwordHint,
-                  controller: controller.newPassController,
-                  isPass: true),
-              20.heightBox,
-              controller.isLoading.value
-                  ? loadingIndicator()
-                  : SizedBox(
-                      width: context.screenWidth - 60,
-                      child: loginbutton(
-                          onPress: () async {
-                            controller.isLoading(true);
+                ),
+                const Divider(),
+                20.heightBox,
+                customTextField(
+                    colorScheme: colorScheme,
+                    title: name,
+                    hint: nameHint,
+                    controller: controller.nameController,
+                    isPass: false),
+                10.heightBox,
+                customTextField(
+                    colorScheme: colorScheme,
+                    title: oldpass,
+                    hint: passwordHint,
+                    controller: controller.oldpassController,
+                    isPass: true),
+                10.heightBox,
+                customTextField(
+                    colorScheme: colorScheme,
+                    title: newpass,
+                    hint: passwordHint,
+                    controller: controller.newPassController,
+                    isPass: true),
+                20.heightBox,
+                controller.isLoading.value
+                    ? loadingIndicator()
+                    : CommonButton(
+                        text: 'Save Changes',
+                        onPressed: () async {
+                          if (data == null) {
+                            VxToast.show(context,
+                                msg: "User data not available");
+                            return;
+                          }
 
-                            //if image is not selected
-                            if (controller.profileImgPath.value.isNotEmpty) {
-                              await controller.uploadProfileImage();
-                            } else {
-                              controller.profileImgLink = data['imageUrl'];
-                            }
+                          controller.isLoading(true);
 
-                            //check if old password matches from database
-                            if (data['password'] ==
-                                controller.oldpassController.text) {
-                              await controller.changeAuthPassword(
-                                  email: data['email'],
-                                  password: controller.oldpassController.text,
-                                  newPassword:
-                                      controller.newPassController.text);
-                              await controller.updateprofile(
-                                  name: controller.nameController.text,
-                                  passowrd: controller.newPassController.text,
-                                  imgURL: controller.profileImgLink);
-                              VxToast.show(context, msg: "Profile Updated!");
-                            } else {
-                              VxToast.show(context,
-                                  msg: "Failed to update password");
-                              controller.isLoading(false);
-                            }
-                          },
-                          bgcolor: redColor,
-                          textColor: whiteColor,
-                          title: 'Save Changes'))
-            ],
-          )
-              .box
-              .white
-              .shadowSm
-              .rounded
-              .padding(const EdgeInsets.all(16))
-              .margin(const EdgeInsets.only(top: 50, left: 12, right: 12))
-              .make(),
+                          // Handle image upload
+                          if (controller.profileImgPath.value.isNotEmpty) {
+                            await controller.uploadProfileImage();
+                          } else {
+                            controller.profileImgLink = data['imageUrl'] ?? '';
+                          }
+
+                          // Check if old password matches
+                          if (data['password'] ==
+                              controller.oldpassController.text) {
+                            await controller.changeAuthPassword(
+                                email: data['email'] ?? '',
+                                password: controller.oldpassController.text,
+                                newPassword: controller.newPassController.text);
+                            await controller.updateprofile(
+                                name: controller.nameController.text,
+                                passowrd: controller.newPassController.text,
+                                imgURL: controller.profileImgLink);
+                            VxToast.show(context, msg: "Profile Updated!");
+                          } else {
+                            VxToast.show(context,
+                                msg: "Incorrect old password");
+                            controller.isLoading(false);
+                          }
+                        },
+                        backgroundColor: colorScheme.primary,
+                      ),
+              ],
+            ),
+          ),
         ),
       ),
-    ));
+    );
   }
 }

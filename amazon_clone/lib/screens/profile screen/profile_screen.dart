@@ -1,4 +1,5 @@
 import 'package:amazon_clone/consts/consts.dart';
+import 'package:amazon_clone/screens/edit_screen.dart';
 import 'package:amazon_clone/screens/profile%20screen/controller/profile_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -180,10 +181,21 @@ class ProfileScreen extends GetView<ProfileController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  'My Profile',
-                  style:
-                      TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'My Profile',
+                      style: TextStyle(
+                          fontSize: 32.sp, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Get.to(() => EditProfileScreen());
+                      },
+                      icon: Icon(Icons.edit),
+                    )
+                  ],
                 ),
                 SizedBox(height: 30.h),
                 Row(
@@ -200,11 +212,11 @@ class ProfileScreen extends GetView<ProfileController> {
                           imgProfile2,
                           width: 64.w, // Match the container size
                           height: 64.h, // Match the container size
-                          fit: BoxFit.cover, // Ensures the image fills the circular space properly
+                          fit: BoxFit
+                              .cover, // Ensures the image fills the circular space properly
                         ),
                       ),
                     ),
-
                     SizedBox(
                       width: 10.w,
                     ),
@@ -227,7 +239,7 @@ class ProfileScreen extends GetView<ProfileController> {
                     const Spacer(),
                     TextButton(
                         onPressed: () async {
-                          showLogoutDialog(context,colorScheme);
+                          showLogoutDialog(context, colorScheme);
                         },
                         child: Text("Log out"))
                   ],
@@ -235,7 +247,7 @@ class ProfileScreen extends GetView<ProfileController> {
                 SizedBox(
                   height: 20.h,
                 ),
-                profileTabs(colorScheme,controller)
+                profileTabs(colorScheme, controller)
               ],
             ),
           ),
@@ -244,25 +256,26 @@ class ProfileScreen extends GetView<ProfileController> {
     );
   }
 
-  Widget profileTabs(ColorScheme colorScheme,ProfileController controller) {
+  Widget profileTabs(ColorScheme colorScheme, ProfileController controller) {
     return Column(
       children: [
-        ListTile(
-          title: Text(
-            "My Orders",
-            style: TextStyle(
-                color: colorScheme.onSecondary,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500),
-          ),
-          subtitle: Text(
-            "You have ${controller.orderCount} orders",
-            style: TextStyle(color: colorScheme.outline, fontSize: 12.sp),
-          ),
-          trailing: Icon(
-            Icons.chevron_right,
-            color: colorScheme.outlineVariant,
-            size: 34.sp,
+        GestureDetector(
+          onTap: () {
+            Get.toNamed(AppRoutes.ordersView);
+          },
+          child: ListTile(
+            title: Text(
+              "My Orders",
+              style: TextStyle(
+                  color: colorScheme.onSecondary,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500),
+            ),
+            trailing: Icon(
+              Icons.chevron_right,
+              color: colorScheme.outlineVariant,
+              size: 34.sp,
+            ),
           ),
         ),
         Divider(

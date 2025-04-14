@@ -7,6 +7,7 @@ import 'package:amazon_clone/screens/cart_screen/shipping_screen.dart';
 import 'package:amazon_clone/screens/categories_screen/categories_screen.dart';
 import 'package:amazon_clone/screens/home_screen/binding/home_binding.dart';
 import 'package:amazon_clone/screens/home_screen/home_screen.dart';
+import 'package:amazon_clone/screens/orders_screen/order_screen.dart';
 import 'package:amazon_clone/screens/profile%20screen/binding/profile_screen_binding.dart';
 import 'package:amazon_clone/screens/splash_screen.dart';
 import 'package:amazon_clone/screens/wishlist_screen/wishlist_screen.dart';
@@ -27,6 +28,7 @@ class AppRoutes {
   static const String categoriesView = '/categories_view';
   static const String wishlistView = '/wishlist_view';
   static const String shippingView = '/shipping_view';
+  static const String ordersView = '/orders_view';
 
   static List<GetPage> routes = [
     GetPage(
@@ -42,5 +44,6 @@ class AppRoutes {
     GetPage(name: cartView, page: ()=> const CartScreen()),
     GetPage(name: categoriesView, page: ()=> const CategoriesScreen()),
     GetPage(name: shippingView, page: ()=> const ShippingScreen()),
+    GetPage(name: ordersView, page: ()=> const OrderScreen()),
   ];
 }

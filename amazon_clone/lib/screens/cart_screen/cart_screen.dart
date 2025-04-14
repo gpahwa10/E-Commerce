@@ -14,9 +14,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(CartController());
-    final colorScheme = Theme
-        .of(context)
-        .colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
         bottomNavigationBar: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -37,12 +35,12 @@ class CartScreen extends StatelessWidget {
                       color: colorScheme.tertiary.withOpacity(0.8)),
                   child: Center(
                       child: Text(
-                        "Checkout",
-                        style: TextStyle(
-                            color: colorScheme.onPrimary,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14.sp),
-                      )),
+                    "Checkout",
+                    style: TextStyle(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp),
+                  )),
                 ),
               )
             ],
@@ -50,10 +48,6 @@ class CartScreen extends StatelessWidget {
         ),
         backgroundColor: whiteColor,
         appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {},
-            ),
             title: Row(
               children: [
                 Text(
@@ -74,17 +68,17 @@ class CartScreen extends StatelessWidget {
                       color: colorScheme.secondary.withOpacity(0.6)),
                   child: Center(
                       child: Text(
-                        '2',
-                        style:
+                    "${controller.productSnapshot.length}",
+                    style:
                         TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),
-                      )),
+                  )),
                 )
               ],
             )),
         body: StreamBuilder(
             stream: FirestoreServices.getCart(currentUser!.uid),
             builder:
-            ((BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                ((BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return loadingIndicator();
               } else if (snapshot.data!.docs.isEmpty) {
@@ -92,7 +86,7 @@ class CartScreen extends StatelessWidget {
                     .text
                     .fontFamily(semibold)
                     .color(darkFontGrey)
-                    .make();
+                    .makeCentered();
               } else {
                 var data = snapshot.data!.docs;
                 controller.calculate(data);
@@ -105,11 +99,12 @@ class CartScreen extends StatelessWidget {
                         child: ListView.builder(
                             itemCount: data.length,
                             itemBuilder: ((BuildContext context, index) {
-                              return CartItemTile(qty: data[index]['qty'],
+                              return CartItemTile(
+                                  qty: data[index]['qty'],
                                   id: data[index].id,
                                   title: data[index]['title'],
                                   image: data[index]['image'],
-                                  tPrice: data[index]['tPrice']);
+                                  tPrice: data[index]['tPrice'].toString());
                             })),
                       ),
                     ],

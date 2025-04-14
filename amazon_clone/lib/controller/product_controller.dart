@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class ProductController extends GetxController {
   var subcat = [];
   var colorIndex = 0.obs;
-  var quantity = 0.obs;
+  var quantity = 1.obs;
   var totalPrice = 0.obs;
   var isFav = false.obs;
 
@@ -37,7 +37,7 @@ class ProductController extends GetxController {
   }
 
   decreaseQuantity() {
-    if (quantity.value > 0) {
+    if (quantity.value > 1) {
       quantity.value--;
     }
   }
@@ -48,7 +48,7 @@ class ProductController extends GetxController {
 
   resetValues() {
     totalPrice.value = 0;
-    quantity.value = 0;
+    quantity.value = 1;
     colorIndex.value = 0;
   }
 
