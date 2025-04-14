@@ -4,6 +4,7 @@ import 'package:amazon_clone/consts/lists.dart';
 import 'package:amazon_clone/controller/product_controller.dart';
 import 'package:amazon_clone/screens/chat_screen/chat_screen.dart';
 import 'package:get/get.dart';
+import 'package:amazon_clone/screens/negotiation_screen/negotiation_screen.dart';
 
 class ProductDetails extends StatelessWidget {
   final String? title;
@@ -235,6 +236,37 @@ class ProductDetails extends StatelessWidget {
                               Get.to(() => const ChatScreen(), arguments: [
                                 data['p_seller'],
                                 data['p_vendorID']
+                              ]);
+                            }),
+                            10.widthBox, // Add spacing between buttons
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.green.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: Colors.green.withOpacity(0.5)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.handshake_outlined,
+                                    color: Colors.green,
+                                    size: 20,
+                                  ),
+                                  8.widthBox,
+                                  "Negotiate"
+                                      .text
+                                      .color(Colors.green)
+                                      .fontFamily(semibold)
+                                      .make(),
+                                ],
+                              ),
+                            ).onTap(() {
+                              Get.to(() => NegotiationScreen(), arguments: [
+                                data['p_name'],
+                                data['p_price'],
+                                data['p_images'][0]
                               ]);
                             })
                           ],
