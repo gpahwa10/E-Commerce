@@ -85,76 +85,78 @@ class _EditProfileState extends State<EditProfile> {
                   )
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              // Image handling
-              controller.snapshotData['imageUrl'] == '' &&
-                      controller.profileImgPath.isEmpty
-                  ? Image.asset(
-                      imgProduct,
-                      width: 100,
-                      fit: BoxFit.cover,
-                    ).box.width(150).roundedFull.clip(Clip.antiAlias).make()
-                  : controller.snapshotData['imageUrl'] != '' &&
-                          controller.profileImgPath.isEmpty
-                      ? Image.network(controller.snapshotData['imageUrl']!,
-                              width: 100, fit: BoxFit.cover)
-                          .box
-                          .width(150)
-                          .roundedFull
-                          .clip(Clip.antiAlias)
-                          .make()
-                      : Image.file(
-                          File(controller.profileImgPath.value),
-                          width: 100,
-                          fit: BoxFit.cover,
-                        )
-                          .box
-                          .width(150)
-                          .roundedFull
-                          .clip(Clip.antiAlias)
-                          .make(),
-
-              20.heightBox,
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: white),
-                onPressed: () {
-                  controller.changeImage(context);
-                },
-                child: normalText(text: "Change Image", color: fontGrey),
-              ),
-              10.heightBox,
-              const Divider(
-                color: white,
-              ),
-              10.heightBox,
-              customTextField(
-                label: name,
-                hint: "Username of the user",
-                isDescription: false,
-                controller: controller.nameController,
-              ),
-              10.heightBox,
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: boldText(text: "Change Your Password")),
-              10.heightBox,
-              customTextField(
-                label: password,
-                hint: passHint,
-                isDescription: false,
-                controller: controller.oldpassController,
-              ),
-              10.heightBox,
-              customTextField(
-                label: conPass,
-                hint: conRePass,
-                isDescription: false,
-                controller: controller.newPassController,
-              ),
-            ],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // Image handling
+                controller.snapshotData['imageUrl'] == '' &&
+                        controller.profileImgPath.isEmpty
+                    ? Image.asset(
+                        imgProduct,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ).box.width(150).roundedFull.clip(Clip.antiAlias).make()
+                    : controller.snapshotData['imageUrl'] != '' &&
+                            controller.profileImgPath.isEmpty
+                        ? Image.network(controller.snapshotData['imageUrl']!,
+                                width: 100, fit: BoxFit.cover)
+                            .box
+                            .width(150)
+                            .roundedFull
+                            .clip(Clip.antiAlias)
+                            .make()
+                        : Image.file(
+                            File(controller.profileImgPath.value),
+                            width: 100,
+                            fit: BoxFit.cover,
+                          )
+                            .box
+                            .width(150)
+                            .roundedFull
+                            .clip(Clip.antiAlias)
+                            .make(),
+          
+                20.heightBox,
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: white),
+                  onPressed: () {
+                    controller.changeImage(context);
+                  },
+                  child: normalText(text: "Change Image", color: fontGrey),
+                ),
+                10.heightBox,
+                const Divider(
+                  color: white,
+                ),
+                10.heightBox,
+                customTextField(
+                  label: name,
+                  hint: "Username of the user",
+                  isDescription: false,
+                  controller: controller.nameController,
+                ),
+                10.heightBox,
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: boldText(text: "Change Your Password")),
+                10.heightBox,
+                customTextField(
+                  label: password,
+                  hint: passHint,
+                  isDescription: false,
+                  controller: controller.oldpassController,
+                ),
+                10.heightBox,
+                customTextField(
+                  label: conPass,
+                  hint: conRePass,
+                  isDescription: false,
+                  controller: controller.newPassController,
+                ),
+              ],
+            ),
           ),
         ),
       ),

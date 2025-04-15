@@ -55,7 +55,7 @@ class SearchScreen extends StatelessWidget {
                                     .fontFamily(semibold)
                                     .make(),
                                 const Spacer(),
-                                "${filterData[index]['p_price']}"
+                                "${filterData[index]['p_actual_price']}"
                                     .numCurrency
                                     .text
                                     .size(16)

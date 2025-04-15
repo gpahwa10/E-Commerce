@@ -75,7 +75,7 @@ class DashboardScreen extends StatelessWidget {
                                       size: 14.0),
                                   subtitle: normalText(
                                       text:
-                                          "₹${"${data[index]['p_price']}".numCurrency}",
+                                          "₹${"${data[index]['p_actual_price']}".numCurrency}",
                                       color: darkGrey),
                                 )),
                       )

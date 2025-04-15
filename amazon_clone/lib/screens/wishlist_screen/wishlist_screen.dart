@@ -13,10 +13,6 @@ class WishlistScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: whiteColor,
       appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {},
-          ),
           title: Row(
             children: [
               Text(
@@ -26,22 +22,22 @@ class WishlistScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 24.sp),
               ),
-              SizedBox(
-                width: 10.w,
-              ),
-              Container(
-                height: 34.h,
-                width: 34.w,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: colorScheme.secondary.withOpacity(0.6)),
-                child: Center(
-                    child: Text(
-                  '2',
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),
-                )),
-              )
+              // SizedBox(
+              //   width: 10.w,
+              // ),
+              // Container(
+              //   height: 34.h,
+              //   width: 34.w,
+              //   decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
+              //       color: colorScheme.secondary.withOpacity(0.6)),
+              //   child: Center(
+              //       child: Text(
+              //     '2',
+              //     style:
+              //         TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400),
+              //   )),
+              // )
             ],
           )),
       body: StreamBuilder(
@@ -112,7 +108,7 @@ class WishlistScreen extends StatelessWidget {
                                           fontWeight: FontWeight.w600,fontSize: 14.sp),
                                     ),
                                     const SizedBox(height: 6),
-                                    Text("${data[index]['p_price']}",style: TextStyle(
+                                    Text("${data[index]['p_base_price']}",style: TextStyle(
                                         color: colorScheme.onSurface,
                                         fontWeight: FontWeight.w400,fontSize: 12.sp),)
                                   ],

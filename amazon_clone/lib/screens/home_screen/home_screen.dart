@@ -202,7 +202,7 @@ class HomeScreen extends StatelessWidget {
                                                       .fontFamily(semibold)
                                                       .make(),
                                                   10.heightBox,
-                                                  "${featuredData[index]['p_price']}"
+                                                  "${featuredData[index]['p_actual_price']}"
                                                       .numCurrency
                                                       .text
                                                       .size(16)
@@ -298,8 +298,7 @@ class HomeScreen extends StatelessWidget {
                                           .fontFamily(semibold)
                                           .make(),
                                       const Spacer(),
-                                      "${allProductData[index]['p_price']}"
-                                          .numCurrency
+                                      "${allProductData[index]['p_actual_price']}"
                                           .text
                                           .size(16)
                                           .fontFamily(bold)

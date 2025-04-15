@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class CartController extends GetxController {
   var totalP = 0.obs;
+  var cartItemCount = 0.obs;
   //text controllers fpr shipping details
   var addressController = TextEditingController();
   var cityController = TextEditingController();
@@ -24,6 +25,7 @@ class CartController extends GetxController {
     for (var i = 0; i < data.length; i++) {
       totalP.value = totalP.value + int.parse(data[i]['tPrice'].toString());
     }
+    cartItemCount.value = data.length; // Update cart item count
   }
 
   changePaymentIndex(index) {

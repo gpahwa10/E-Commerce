@@ -3,8 +3,10 @@ import 'package:amazon_clone/consts/consts.dart';
 import 'package:amazon_clone/consts/lists.dart';
 import 'package:amazon_clone/controller/product_controller.dart';
 import 'package:amazon_clone/screens/chat_screen/chat_screen.dart';
-import 'package:get/get.dart';
 import 'package:amazon_clone/screens/negotiation_screen/negotiation_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ProductDetails extends StatelessWidget {
   final String? title;
@@ -16,6 +18,7 @@ class ProductDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<ProductController>();
     final colorScheme = Theme.of(context).colorScheme;
+
     return WillPopScope(
       onWillPop: () async {
         controller.resetValues();
@@ -27,560 +30,574 @@ class ProductDetails extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.white,
           leading: IconButton(
-              onPressed: () {
-                controller.resetValues();
-                Get.back();
-              },
-              icon: const Icon(Icons.arrow_back, color: darkFontGrey)),
-          title: title!.text.color(darkFontGrey).fontFamily(bold).make(),
+            onPressed: () {
+              controller.resetValues();
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back, color: darkFontGrey),
+          ),
+          title: Text(
+            title ?? 'Product Details', // Fallback if title is null
+            style: TextStyle(
+              color: darkFontGrey,
+              fontFamily: bold,
+            ),
+          ),
           actions: [
             Obx(
-              () => IconButton(
-                  onPressed: () {
-                    if (controller.isFav.value) {
-                      controller.removeFromWishlist(data.id, context);
-                    } else {
-                      controller.addToWishlist(data.id, context);
-                    }
-                  },
-                  icon: Icon(
-                    Icons.favorite,
-                    color: controller.isFav.value ? redColor : darkFontGrey,
-                  )),
+                  () => IconButton(
+                onPressed: () {
+                  if (controller.isFav.value) {
+                    controller.removeFromWishlist(data.id, context);
+                  } else {
+                    controller.addToWishlist(data.id, context);
+                  }
+                },
+                icon: Icon(
+                  Icons.favorite,
+                  color: controller.isFav.value ? redColor : darkFontGrey,
+                ),
+              ),
             ),
           ],
         ),
         body: Column(
           children: [
             Expanded(
-                child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Image slider with indicator
-                  Stack(
-                    children: [
-                      VxSwiper.builder(
-                          autoPlay: true,
-                          height: 350,
-                          aspectRatio: 16 / 9,
-                          viewportFraction: 1.0,
-                          itemCount: data["p_images"].length,
-                          itemBuilder: (context, index) {
-                            return Image.network(
-                              data["p_images"][index],
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress.expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress
-                                                .cumulativeBytesLoaded /
-                                            loadingProgress.expectedTotalBytes!
-                                        : null,
-                                    color: redColor,
-                                  ),
-                                );
-                              },
-                            );
-                          }),
-                      // Image count indicator
-                      Positioned(
-                        bottom: 10,
-                        right: 10,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.7),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: "${data["p_images"].length} photos"
-                              .text
-                              .white
-                              .size(12)
-                              .make(),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // Product info section
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Image slider with indicator
+                    Stack(
                       children: [
-                        title!.text
-                            .size(18)
-                            .color(darkFontGrey)
-                            .fontFamily(bold)
-                            .make(),
-
-                        10.heightBox,
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Price with discount tag
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                "${data["p_price"]}"
-                                    .numCurrency
-                                    .text
-                                    .color(redColor)
-                                    .fontFamily(bold)
-                                    .size(20)
-                                    .make(),
-                                // Optional discount tag
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: redColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(4),
-                                  ),
-                                  child: "20% OFF"
-                                      .text
-                                      .color(redColor)
-                                      .size(12)
-                                      .fontFamily(semibold)
-                                      .make(),
-                                ),
-                              ],
-                            ),
-
-                            // Rating
-                            Row(
-                              children: [
-                                VxRating(
-                                  onRatingUpdate: (value) {},
-                                  normalColor: textfieldGrey,
-                                  selectionColor: golden,
-                                  count: 5,
-                                  maxRating: 5,
-                                  value: double.parse(data["p_rating"]),
-                                  size: 20,
-                                  stepInt: false,
-                                ),
-                                5.widthBox,
-                                "(${data["p_rating"]})"
-                                    .text
-                                    .color(textfieldGrey)
-                                    .size(14)
-                                    .make(),
-                              ],
-                            ),
-                          ],
+                        SizedBox(
+                          height: 350.h,
+                          width: double.infinity,
+                          child: PageView.builder(
+                            itemCount: (data['p_images'] as List?)?.length ?? 0,
+                            pageSnapping: true,
+                            itemBuilder: (context, index) {
+                              return Image.network(
+                                (data['p_images'] as List?)?[index] ?? '',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      value: loadingProgress.expectedTotalBytes != null
+                                          ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                          : null,
+                                      color: redColor,
+                                    ),
+                                  );
+                                },
+                                errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.error, color: darkFontGrey),
+                              );
+                            },
+                          ),
                         ),
-
-                        15.heightBox,
-                        const Divider(),
-                        15.heightBox,
-
-                        // Seller info
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                "Seller:".text.color(textfieldGrey).make(),
-                                5.heightBox,
-                                "${data["p_seller"]}"
-                                    .text
-                                    .color(darkFontGrey)
-                                    .fontFamily(semibold)
-                                    .make(),
-                              ],
-                            )),
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: redColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    color: redColor.withOpacity(0.5)),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.message_rounded,
-                                    color: redColor,
-                                    size: 20,
-                                  ),
-                                  8.widthBox,
-                                  "Chat"
-                                      .text
-                                      .color(redColor)
-                                      .fontFamily(semibold)
-                                      .make(),
-                                ],
-                              ),
-                            ).onTap(() {
-                              Get.to(() => const ChatScreen(), arguments: [
-                                data['p_seller'],
-                                data['p_vendorID']
-                              ]);
-                            }),
-                            10.widthBox, // Add spacing between buttons
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                    color: Colors.green.withOpacity(0.5)),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.handshake_outlined,
-                                    color: Colors.green,
-                                    size: 20,
-                                  ),
-                                  8.widthBox,
-                                  "Negotiate"
-                                      .text
-                                      .color(Colors.green)
-                                      .fontFamily(semibold)
-                                      .make(),
-                                ],
-                              ),
-                            ).onTap(() {
-                              Get.to(() => NegotiationScreen(), arguments: [
-                                data['p_name'],
-                                data['p_price'],
-                                data['p_images'][0]
-                              ]);
-                            })
-                          ],
-                        ),
-
-                        20.heightBox,
-
-                        // Color selection
-                        Obx(
-                          () => Container(
-                            padding: const EdgeInsets.all(16),
+                        // Image count indicator
+                        Positioned(
+                          bottom: 10.h,
+                          right: 10.w,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 4.h,
+                            ),
                             decoration: BoxDecoration(
-                              color: lightGrey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black.withOpacity(0.7),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
-                            child: Column(
-                              children: [
-                                Row(
+                            child: Text(
+                              "${(data['p_images'] as List?)?.length ?? 0} photos",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Product info section
+                    Container(
+                      padding: EdgeInsets.all(16.w),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25.r),
+                          topRight: Radius.circular(25.r),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title ?? data['p_name'] ?? 'No Name', // Use p_name if title is null
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              color: darkFontGrey,
+                              fontFamily: bold,
+                            ),
+                          ),
+
+                          SizedBox(height: 10.h),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Price with discount tag
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "\$${(data['p_actual_price'] ?? 0).toString()}", // Fallback to 0
+                                    style: TextStyle(
+                                      color: redColor,
+                                      fontFamily: bold,
+                                      fontSize: 20.sp,
+                                    ),
+                                  ),
+                                  // Optional discount tag (assuming a discount logic)
+                                  // if ((data['p_base_price'] ?? 0) > (data['p_actual_price'] ?? 0))
+                                  //   Container(
+                                  //     margin: EdgeInsets.only(top: 4.h),
+                                  //     padding: EdgeInsets.symmetric(
+                                  //       horizontal: 8.w,
+                                  //       vertical: 2.h,
+                                  //     ),
+                                  //     decoration: BoxDecoration(
+                                  //       color: redColor.withOpacity(0.1),
+                                  //       borderRadius: BorderRadius.circular(4.r),
+                                  //     ),
+                                  //     child: Text(
+                                  //       "${(((data['p_base_price'] ?? 0) - (data['p_actual_price'] ?? 0)) / (data['p_base_price'] ?? 1) * 100).toStringAsFixed(0)}% OFF",
+                                  //       style: TextStyle(
+                                  //         color: redColor,
+                                  //         fontSize: 12.sp,
+                                  //         fontFamily: semibold,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                ],
+                              ),
+
+                              // Rating
+                              Row(
+                                children: [
+                                  Row(
+                                    children: List.generate(
+                                      5,
+                                          (index) => Icon(
+                                        index < (double.tryParse(data['p_rating']?.toString() ?? "0.0") ?? 0.0).floor()
+                                            ? Icons.star
+                                            : index < (double.tryParse(data['p_rating']?.toString() ?? "0.0") ?? 0.0)
+                                            ? Icons.star_half
+                                            : Icons.star_border,
+                                        color: golden,
+                                        size: 20.sp,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5.w),
+                                  Text(
+                                    "(${data['p_rating'] ?? '0.0'})",
+                                    style: TextStyle(
+                                      color: textfieldGrey,
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 15.h),
+                          const Divider(),
+                          SizedBox(height: 15.h),
+
+                          // Seller info
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "Color: "
-                                        .text
-                                        .color(darkFontGrey)
-                                        .fontFamily(semibold)
-                                        .make(),
-                                    10.widthBox,
-                                    Expanded(
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                          children: List.generate(
-                                              data["p_colors"].length,
-                                              (index) => Stack(
-                                                    alignment: Alignment.center,
-                                                    children: [
-                                                      VxBox()
-                                                          .size(45, 45)
-                                                          .roundedFull
-                                                          .color(Color(data[
-                                                                      "p_colors"]
-                                                                  [index])
-                                                              .withOpacity(1.0))
-                                                          .margin(
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      6))
-                                                          .make()
-                                                          .onTap(() {
-                                                        controller
-                                                            .changeColorIndex(
-                                                                index);
-                                                      }),
-                                                      Visibility(
-                                                        visible: index ==
-                                                            controller
-                                                                .colorIndex
-                                                                .value,
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Colors.white,
-                                                            shape:
-                                                                BoxShape.circle,
-                                                          ),
-                                                          padding:
-                                                              EdgeInsets.all(2),
-                                                          child: const Icon(
-                                                            Icons.check,
-                                                            color: Colors.green,
-                                                            size: 16,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  )),
-                                        ),
+                                    Text(
+                                      "Seller:",
+                                      style: TextStyle(
+                                        color: textfieldGrey,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    Text(
+                                      data['p_seller'] ?? 'Unknown Seller',
+                                      style: TextStyle(
+                                        color: darkFontGrey,
+                                        fontFamily: semibold,
                                       ),
                                     ),
                                   ],
                                 ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(() => const ChatScreen(), arguments: [
+                                    data['p_seller'] ?? 'Unknown Seller',
+                                    data['p_vendorID'] ?? ''
+                                  ]);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8.w),
+                                  decoration: BoxDecoration(
+                                    color: redColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                      color: redColor.withOpacity(0.5),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.message_rounded,
+                                        color: redColor,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Text(
+                                        "Chat",
+                                        style: TextStyle(
+                                          color: redColor,
+                                          fontFamily: semibold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10.w),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(() => NegotiationScreen(), arguments: [
+                                    data['p_name'] ?? 'Unknown Product',
+                                    data['p_actual_price'] ?? 0,
+                                    data['p_base_price'] ?? 0,
+                                    (data['p_images'] as List?)?.first ?? ''
+                                  ]);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8.w),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                      color: Colors.green.withOpacity(0.5),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.handshake_outlined,
+                                        color: Colors.green,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 8.w),
+                                      Text(
+                                        "Negotiate",
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontFamily: semibold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
 
-                                15.heightBox,
+                          SizedBox(height: 20.h),
 
-                                // Quantity selector
-                                Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        "Quantity: "
-                                            .text
-                                            .color(darkFontGrey)
-                                            .fontFamily(semibold)
-                                            .make(),
-                                        10.widthBox,
-                                        Obx(
-                                          () => Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 8, vertical: 4),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: textfieldGrey),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      controller
-                                                          .decreaseQuantity();
-                                                      controller
-                                                          .calculateTotalAmount(
-                                                              int.parse(data[
-                                                                  "p_price"]));
+                          // Color selection
+                          Obx(
+                                () => Container(
+                              padding: EdgeInsets.all(16.w),
+                              decoration: BoxDecoration(
+                                color: lightGrey.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Color: ",
+                                        style: TextStyle(
+                                          color: darkFontGrey,
+                                          fontFamily: semibold,
+                                        ),
+                                      ),
+                                      SizedBox(width: 10.w),
+                                      Expanded(
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: List.generate(
+                                              (data['p_colors'] as List?)?.length ?? 0,
+                                                  (index) => Stack(
+                                                alignment: Alignment.center,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      controller.changeColorIndex(index);
                                                     },
-                                                    constraints:
-                                                        BoxConstraints.tightFor(
-                                                            height: 36,
-                                                            width: 36),
-                                                    padding: EdgeInsets.zero,
-                                                    icon: const Icon(
-                                                        Icons.remove,
-                                                        size: 18)),
-                                                20.widthBox,
-                                                controller.quantity.value.text
-                                                    .size(16)
-                                                    .fontFamily(bold)
-                                                    .color(darkFontGrey)
-                                                    .make(),
-                                                20.widthBox,
-                                                IconButton(
-                                                    onPressed: () {
-                                                      controller.increaseQuantity(
-                                                          int.parse(data[
-                                                              "p_quantity"]));
-                                                      controller
-                                                          .calculateTotalAmount(
-                                                              int.parse(data[
-                                                                  "p_price"]));
-                                                    },
-                                                    constraints:
-                                                        BoxConstraints.tightFor(
-                                                            height: 36,
-                                                            width: 36),
-                                                    padding: EdgeInsets.zero,
-                                                    icon: const Icon(Icons.add,
-                                                        size: 18)),
-                                              ],
+                                                    child: Container(
+                                                      margin: EdgeInsets.symmetric(
+                                                        horizontal: 6.w,
+                                                      ),
+                                                      width: 45.w,
+                                                      height: 45.w,
+                                                      decoration: BoxDecoration(
+                                                        color: Color(
+                                                          (data['p_colors'] as List?)?[index] ?? 0xFF000000,
+                                                        ).withOpacity(1.0),
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Visibility(
+                                                    visible: index ==
+                                                        controller.colorIndex.value,
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      padding: EdgeInsets.all(2.w),
+                                                      child: const Icon(
+                                                        Icons.check,
+                                                        color: Colors.green,
+                                                        size: 16,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                    "( ${data["p_quantity"]} Available)"
-                                        .text
-                                        .color(textfieldGrey)
-                                        .make()
-                                  ],
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(height: 15.h),
+
+                                  // Quantity selector
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Quantity: ",
+                                            style: TextStyle(
+                                              color: darkFontGrey,
+                                              fontFamily: semibold,
+                                            ),
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          Obx(
+                                                () => Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 8.w,
+                                                vertical: 4.h,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  color: textfieldGrey,
+                                                ),
+                                                borderRadius:
+                                                BorderRadius.circular(8.r),
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      controller.decreaseQuantity();
+                                                      controller.calculateTotalAmount(
+                                                        int.parse((data['p_actual_price'] ?? '0').toString()),
+                                                      );
+                                                    },
+                                                    constraints: BoxConstraints.tightFor(
+                                                      height: 36.h,
+                                                      width: 36.w,
+                                                    ),
+                                                    padding: EdgeInsets.zero,
+                                                    icon: Icon(
+                                                      Icons.remove,
+                                                      size: 18.sp,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 20.w),
+                                                  Text(
+                                                    "${controller.quantity.value}",
+                                                    style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      fontFamily: bold,
+                                                      color: darkFontGrey,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 20.w),
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      controller.increaseQuantity(
+                                                        int.parse((data['p_quantity'] ?? '0').toString()),
+                                                      );
+                                                      controller.calculateTotalAmount(
+                                                        int.parse((data['p_actual_price'] ?? '0').toString()),
+                                                      );
+                                                    },
+                                                    constraints: BoxConstraints.tightFor(
+                                                      height: 36.h,
+                                                      width: 36.w,
+                                                    ),
+                                                    padding: EdgeInsets.zero,
+                                                    icon: Icon(
+                                                      Icons.add,
+                                                      size: 18.sp,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 6.h),
+                                      Text(
+                                        "( ${(data['p_quantity'] ?? 0)} Available)",
+                                        style: TextStyle(
+                                          color: textfieldGrey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  SizedBox(height: 15.h),
+
+                                  // Total price
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Total: ",
+                                        style: TextStyle(
+                                          color: darkFontGrey,
+                                          fontFamily: semibold,
+                                        ),
+                                      ),
+                                      SizedBox(width: 10.w),
+                                      Text(
+                                        "\$${(controller.totalPrice.value != 0 ? controller.totalPrice.value : (data['p_actual_price'] ?? 0))}",
+                                        style: TextStyle(
+                                          color: redColor,
+                                          fontSize: 18.sp,
+                                          fontFamily: bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 25.h),
+
+                          // Description
+                          Text(
+                            "Description",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: darkFontGrey,
+                              fontFamily: bold,
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          Container(
+                            padding: EdgeInsets.all(12.w),
+                            decoration: BoxDecoration(
+                              color: lightGrey.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Text(
+                              data['p_description'] ?? 'No description available',
+                              style: TextStyle(
+                                color: darkFontGrey,
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 20.h),
+
+                          // Details buttons with improved styling
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: itemDetailsButtonList.length,
+                              separatorBuilder: (context, index) => Divider(
+                                height: 1,
+                                color: Colors.grey.shade300,
+                              ),
+                              itemBuilder: (context, index) => ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16.w,
+                                  vertical: 4.h,
                                 ),
-
-                                15.heightBox,
-
-                                // Total price
-                                Row(
-                                  children: [
-                                    "Total: "
-                                        .text
-                                        .color(darkFontGrey)
-                                        .fontFamily(semibold)
-                                        .make(),
-                                    10.widthBox,
-                                    "${controller.totalPrice.value != 0 ? controller.totalPrice.value : data['p_price']}"
-                                        .numCurrency
-                                        .text
-                                        .color(redColor)
-                                        .size(18)
-                                        .fontFamily(bold)
-                                        .make()
-                                  ],
+                                title: Text(
+                                  itemDetailsButtonList[index],
+                                  style: TextStyle(
+                                    fontFamily: semibold,
+                                    color: darkFontGrey,
+                                  ),
                                 ),
-                              ],
+                                trailing: Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16.sp,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
 
-                        25.heightBox,
-
-                        // Description
-                        "Description"
-                            .text
-                            .size(16)
-                            .color(darkFontGrey)
-                            .fontFamily(bold)
-                            .make(),
-                        10.heightBox,
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: lightGrey.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: "${data["p_description"]}"
-                              .text
-                              .color(darkFontGrey)
-                              .make(),
-                        ),
-
-                        20.heightBox,
-
-                        // Details buttons with improved styling
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: Colors.grey.shade300),
-                          ),
-                          child: ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: itemDetailsButtonList.length,
-                            separatorBuilder: (context, index) => Divider(
-                              height: 1,
-                              color: Colors.grey.shade300,
-                            ),
-                            itemBuilder: (context, index) => ListTile(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 4),
-                              title: itemDetailsButtonList[index]
-                                  .text
-                                  .fontFamily(semibold)
-                                  .color(darkFontGrey)
-                                  .make(),
-                              trailing:
-                                  const Icon(Icons.arrow_forward_ios, size: 16),
-                            ),
-                          ),
-                        ),
-
-                        30.heightBox,
-
-                        // // You may also like section
-                        // prodcutSummaryLike.text
-                        //     .fontFamily(bold)
-                        //     .size(16)
-                        //     .color(darkFontGrey)
-                        //     .make(),
-                        // 15.heightBox,
-                        // SingleChildScrollView(
-                        //   physics: const BouncingScrollPhysics(),
-                        //   scrollDirection: Axis.horizontal,
-                        //   child: Row(
-                        //     children: List.generate(
-                        //         6,
-                        //         (index) => Container(
-                        //               width: 160,
-                        //               padding: const EdgeInsets.all(8),
-                        //               margin: const EdgeInsets.only(right: 12),
-                        //               decoration: BoxDecoration(
-                        //                 color: Colors.white,
-                        //                 borderRadius: BorderRadius.circular(12),
-                        //                 boxShadow: [
-                        //                   BoxShadow(
-                        //                     color: Colors.grey.shade200,
-                        //                     blurRadius: 4,
-                        //                     spreadRadius: 1,
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //               child: Column(
-                        //                 crossAxisAlignment:
-                        //                     CrossAxisAlignment.start,
-                        //                 children: [
-                        //                   AspectRatio(
-                        //                     aspectRatio: 1,
-                        //                     child: ClipRRect(
-                        //                       borderRadius:
-                        //                           BorderRadius.circular(8),
-                        //                       child: Image.asset(
-                        //                         imgP1,
-                        //                         fit: BoxFit.cover,
-                        //                       ),
-                        //                     ),
-                        //                   ),
-                        //                   10.heightBox,
-                        //                   "Laptop 4GB/64GB"
-                        //                       .text
-                        //                       .color(darkFontGrey)
-                        //                       .fontFamily(semibold)
-                        //                       .make(),
-                        //                   5.heightBox,
-                        //                   "₹60,000"
-                        //                       .text
-                        //                       .size(16)
-                        //                       .fontFamily(bold)
-                        //                       .color(redColor)
-                        //                       .make()
-                        //                 ],
-                        //               ),
-                        //             )),
-                        //   ),
-                        // ),
-
-                        40.heightBox,
-                        // Extra padding at bottom for scrolling
-                      ],
+                          SizedBox(height: 40.h),
+                          // Extra padding at bottom for scrolling
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )),
+            ),
 
             // Add to cart button with improved styling
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 8.h,
+              ),
               decoration: BoxDecoration(
                 color: Colors.white,
                 boxShadow: [
@@ -588,23 +605,30 @@ class ProductDetails extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.2),
                     blurRadius: 10,
                     spreadRadius: 1,
-                    offset: Offset(0, -5),
+                    offset: const Offset(0, -5),
                   ),
                 ],
               ),
               child: CommonButton(
                 onPressed: () {
                   controller.addToCart(
-                    title: data['p_name'],
-                    image: data['p_images'][0],
-                    sellerName: data['p_seller'],
-                    color: data['p_colors'][controller.colorIndex.value],
-                    vendorID: data['p_vendorID'],
+                    title: data['p_name'] ?? 'Unknown Product',
+                    image: (data['p_images'] as List?)?.first ?? '',
+                    sellerName: data['p_seller'] ?? 'Unknown Seller',
+                    color: (data['p_colors'] as List?)?.first ?? 0xFF000000,
+                    vendorID: data['p_vendorID'] ?? '',
                     qty: controller.quantity.value,
-                    tPrice: controller.totalPrice.value!=0? controller.totalPrice.value: data['p_price'],
+                    tPrice: controller.totalPrice.value != 0
+                        ? controller.totalPrice.value
+                        : (data['p_actual_price'] ?? 0),
                     context: context,
                   );
-                  VxToast.show(context, msg: "Item added to cart successfully");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Item added to cart successfully"),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
                 },
                 backgroundColor: colorScheme.primary,
                 text: 'Add To Cart',

@@ -14,8 +14,11 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<ChatMessage> _messages = [];
   final String productName = Get.arguments[0];
-  final double productPrice = double.parse(Get.arguments[1].toString());
-  final String productImage = Get.arguments[2];
+  final double productPrice = double.parse(Get.arguments[1].toString().replaceAll(',', ''));
+  final double productBasePrice = double.parse(Get.arguments[2].toString().replaceAll(',', ''));
+  // final double productPrice = double.parse(Get.arguments[1].toString());
+  // final int productBasePrice = int.parse(Get.arguments[2].toString());
+  final String productImage = Get.arguments[3];
 
   // Gemini model and chat session
   late GenerativeModel _model;
@@ -47,10 +50,10 @@ class _NegotiationScreenState extends State<NegotiationScreen> {
 Your role is to negotiate product prices with customers.
 
 Product: $productName
-Base Price: ₹${productPrice.toStringAsFixed(2)}
+Base Price: ₹${productBasePrice.toStringAsFixed(2)}
 
 Guidelines:
-1. You can offer up to 30% discount from the base price, but try to maximize profit.
+1. You can offer a discount, but the final price should not go below the base price of ₹${productPrice.toStringAsFixed(2)}. Try to minimize the discount.
 2. Start with a friendly greeting and ask what price they'd like to offer.
 3. Be polite but firm in negotiations.
 4. If they offer a reasonable price (less than 20% discount), accept quickly.

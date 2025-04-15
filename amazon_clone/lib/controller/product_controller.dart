@@ -27,7 +27,7 @@ class ProductController extends GetxController {
   }
 
   changeColorIndex(index) {
-    colorIndex = index;
+    colorIndex.value = index;
   }
 
   increaseQuantity(totalQuantity) {
